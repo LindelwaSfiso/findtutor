@@ -41,15 +41,32 @@ class ForumRepositoryImpl extends ForumRepository {
   }
 
   @override
-  Future<ForumPost> createPost(CreateForumPostParams params) {
-    // TODO: implement createPost
-    throw UnimplementedError();
+  Future<Either<GenericError, ForumPost>> createPost(
+      CreateForumPostParams params) async {
+    try {
+      final response = await restClient.createPost(params);
+      return Right(response);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
+        return const Left(
+          GenericError(detail: "Connection timeout. Please try again."),
+        );
+      }
+      if (e.response?.data != null) {
+        return Left(
+          GenericError.fromJson(e.response?.data as Map<String, dynamic>),
+        );
+      }
+      return const Left(GenericError(detail: "Failed to create post."));
+    } on Exception catch (_) {
+      return const Left(GenericError(detail: "Failed to create post."));
+    }
   }
 
   @override
-  Future<void> followForum(int forumId) {
-    // TODO: implement followForum
-    throw UnimplementedError();
+  Future<Either<GenericError, void>> followForum(int forumId) async {
+    // TODO: Implement followForum API call and error handling
+    throw UnimplementedError(); // Placeholder
   }
 
   @override
@@ -109,32 +126,80 @@ class ForumRepositoryImpl extends ForumRepository {
   }
 
   @override
-  Future<void> joinForum(int forumId) {
-    // TODO: implement joinForum
-    throw UnimplementedError();
+  Future<Either<GenericError, void>> joinForum(int forumId) async {
+    try {
+      await restClient.joinForum(forumId);
+      return const Right(null);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
+        return const Left(
+          GenericError(detail: "Connection timeout. Please try again."),
+        );
+      }
+      if (e.response?.data != null) {
+        return Left(
+          GenericError.fromJson(e.response?.data as Map<String, dynamic> ),
+        );
+      }
+      return const Left(GenericError(detail: "Failed to join forum."));
+    } on Exception catch (_) {
+      return const Left(GenericError(detail: "Failed to join forum."));
+    }
   }
 
   @override
-  Future<void> leaveForum(int forumId) {
-    // TODO: implement leaveForum
-    throw UnimplementedError();
+  Future<Either<GenericError, void>> leaveForum(int forumId) async {
+    try {
+      await restClient.leaveForum(forumId);
+      return const Right(null);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
+        return const Left(
+          GenericError(detail: "Connection timeout. Please try again."),
+        );
+      }
+      if (e.response?.data != null) {
+        return Left(
+          GenericError.fromJson(e.response?.data as Map<String, dynamic> ),
+        );
+      }
+      return const Left(GenericError(detail: "Failed to leave forum."));
+    } on Exception catch (_) {
+      return const Left(GenericError(detail: "Failed to leave forum."));
+    }
   }
 
   @override
-  Future<void> likePost(int postId) {
-    // TODO: implement likePost
-    throw UnimplementedError();
+  Future<Either<GenericError, void>> likePost(int postId) async {
+    try {
+      await restClient.likePost(postId);
+      return const Right(null);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout) {
+        return const Left(
+          GenericError(detail: "Connection timeout. Please try again."),
+        );
+      }
+      if (e.response?.data != null) {
+        return Left(
+          GenericError.fromJson(e.response?.data as Map<String, dynamic> ),
+        );
+      }
+      return const Left(GenericError(detail: "Failed to like post."));
+    } on Exception catch (_) {
+      return const Left(GenericError(detail: "Failed to like post."));
+    }
   }
 
   @override
-  Future<void> unfollowForum(int forumId) {
-    // TODO: implement unfollowForum
-    throw UnimplementedError();
+  Future<Either<GenericError, void>> unfollowForum(int forumId) async {
+    // TODO: Implement unfollowForum API call and error handling
+    throw UnimplementedError(); // Placeholder
   }
 
   @override
-  Future<void> unlikePost(int postId) {
-    // TODO: implement unlikePost
-    throw UnimplementedError();
+  Future<Either<GenericError, void>> unlikePost(int postId) async {
+    // TODO: Implement unlikePost API call and error handling
+    throw UnimplementedError(); // Placeholder
   }
 }
