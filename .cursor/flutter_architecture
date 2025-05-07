@@ -1,0 +1,9 @@
+# Architecture
+- clean Architecture
+- four layers, bloc, presentation, domain and data layer
+
+# libraries
+- bloc, flutter, get_it, retrofit
+- read the pubsec file for more libraries
+
+

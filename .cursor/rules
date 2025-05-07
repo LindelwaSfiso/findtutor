@@ -1,0 +1,102 @@
+# Cursor Prompt for Eswatini Tutoring Platform Development
+
+**Goal:** Generate Flutter and Django code snippets and guidance for building a tutoring platform tailored for Eswatini students, utilizing Cursor AI for coding assistance.
+
+**Target Audience:** Eswatini students seeking tutors and individuals offering tutoring services within Eswatini.
+
+**Core Technologies:** Flutter (frontend), Django (backend), Cursor AI (coding assistant).
+
+**Methodology: Sliced Development**
+
+We will build this application in logical slices, focusing on key features. For each slice, provide:
+
+1.  **Description:** A brief explanation of the slice's functionality.
+2.  **Flutter Instructions:** Detailed steps and code snippets for the frontend components using Flutter.
+3.  **Django Instructions:** Detailed steps and code snippets for the backend components using Django.
+4.  **Cursor AI Guidance:** Specific prompts and instructions on how to best utilize Cursor AI for this slice.
+
+**Slice 1: User Authentication (Students & Tutors)**
+
+1.  **Description:** Allows students and tutors to create accounts, log in, and log out securely. Differentiate between student and tutor roles.
+2.  **Flutter Instructions:**
+    * Create UI screens for signup (separate for students and tutors) and login. Include fields for name, email, password, and a role selection (for signup).
+    * Implement basic form validation.
+    * Outline the API calls needed for signup and login to the Django backend. Use a state management solution like Provider or BLoC.
+    * *(Cursor AI Guidance: "Generate Flutter code for student and tutor signup screens with email/password validation. Show how to structure the API call to a Django backend for user creation, including sending the user role.")*
+3.  **Django Instructions:**
+    * Define Django models for `Student` and `Tutor` extending the `User` model. Include any specific fields for each role (e.g., student's school level, tutor's subjects taught).
+    * Create Django REST Framework (DRF) serializers for user registration and login.
+    * Implement API endpoints for user registration (`/api/register/student/`, `/api/register/tutor/`) and login (`/api/login/`). Use Django's authentication system.
+    * Implement token-based authentication (e.g., using Simple JWT).
+    * *(Cursor AI Guidance: "Generate Django models for Student and Tutor with relevant fields. Create DRF serializers for user registration and login. Implement API endpoints for registration and login using token-based authentication.")*
+4.  **Cursor AI Guidance (General for Slice 1):** "Assist in connecting the Flutter frontend to the Django backend for user authentication. Provide error handling examples for both frontend and backend."
+
+**Slice 2: Tutor Profiles**
+
+1.  **Description:** Allows tutors to create and manage their profiles, including subjects they teach, experience, qualifications, availability, and pricing.
+2.  **Flutter Instructions:**
+    * Create UI screens for tutors to input and view their profile information. Include fields for subjects, experience (text area), qualifications (list), availability (calendar or time slots), and hourly rate.
+    * Implement UI for uploading profile pictures.
+    * Outline the API calls to the Django backend for creating, updating, and retrieving tutor profiles.
+    * *(Cursor AI Guidance: "Generate Flutter UI for tutor profile creation and viewing. Include input fields for subjects, experience, qualifications, availability, and pricing. Show how to handle image uploads.")*
+3.  **Django Instructions:**
+    * Create a Django model for `TutorProfile` with fields corresponding to the information in the Flutter UI. Establish a one-to-one relationship with the `Tutor` model.
+    * Create a DRF serializer for `TutorProfile`.
+    * Implement API endpoints for creating (`/api/tutor/profile/create/`), updating (`/api/tutor/profile/update/`), and retrieving (`/api/tutor/profile/<int:tutor_id>/`) tutor profiles. Ensure only the logged-in tutor can modify their profile.
+    * *(Cursor AI Guidance: "Generate a Django model for TutorProfile with fields for subjects, experience, qualifications, availability, and pricing. Create a DRF serializer for this model and implement CRUD API endpoints.")*
+4.  **Cursor AI Guidance (General for Slice 2):** "Assist in handling data serialization and deserialization between Flutter and Django for tutor profiles. Provide guidance on secure data handling for tutor information."
+
+**Slice 3: Student Search & Filtering**
+
+1.  **Description:** Enables students to search for tutors based on subject, price range, and potentially location (within Eswatini).
+2.  **Flutter Instructions:**
+    * Create a UI screen with search input for subjects and filters for price range. Consider adding a location-based filter if feasible.
+    * Implement the API call to the Django backend to fetch tutors based on search criteria.
+    * Display the search results with basic tutor information (name, subjects, rating, price).
+    * *(Cursor AI Guidance: "Generate Flutter UI for searching tutors by subject and filtering by price. Show how to construct the API request to the Django backend with query parameters.")*
+3.  **Django Instructions:**
+    * Implement an API endpoint (`/api/tutors/search/`) that accepts query parameters for subject and price range.
+    * Implement logic in the Django view to filter `TutorProfile` objects based on the provided parameters.
+    * Consider using Django filters for more advanced filtering options.
+    * *(Cursor AI Guidance: "Implement a Django API endpoint to search for tutors based on subject and price range. Use Django ORM to filter TutorProfile data.")*
+4.  **Cursor AI Guidance (General for Slice 3):** "Optimize the Django search query for efficiency. Provide guidance on handling no search results gracefully in the Flutter frontend."
+
+**Slice 4: Booking & Communication**
+
+1.  **Description:** Allows students to request lessons with tutors and facilitates initial communication.
+2.  **Flutter Instructions:**
+    * On the tutor profile page, add a button for students to "Request Lesson."
+    * Create a simple form for students to specify their preferred date/time and a brief message to the tutor.
+    * Outline the API call to the Django backend to create a booking request.
+    * *(Cursor AI Guidance: "Generate Flutter UI for requesting a lesson, including date/time selection and a message field. Show how to send this data to the Django backend.")*
+3.  **Django Instructions:**
+    * Create a Django model for `BookingRequest` with fields for student, tutor, requested date/time, message, and status (pending, accepted, rejected).
+    * Create a DRF serializer for `BookingRequest`.
+    * Implement an API endpoint for students to create booking requests (`/api/booking/request/`).
+    * Implement an API endpoint for tutors to view and respond to booking requests (`/api/tutor/booking/requests/`).
+    * Consider basic email notifications for new booking requests.
+    * *(Cursor AI Guidance: "Generate a Django model for BookingRequest with relevant fields. Create DRF serializers and API endpoints for creating and managing booking requests. Implement basic email notifications.")*
+4.  **Cursor AI Guidance (General for Slice 4):** "Provide guidance on handling asynchronous operations for booking requests. Suggest ways to implement basic in-app messaging or integrate with external communication tools in later stages."
+
+**General Rules and Guidelines for Cursor AI:**
+
+* **Be specific:** Clearly define the functionality and the technology stack (Flutter and Django) in each prompt.
+* **Focus on one step at a time:** Break down complex tasks into smaller, manageable chunks.
+* **Request code snippets:** Ask for actual code examples in Flutter and Django.
+* **Specify file structure:** If you have a preferred file structure, mention it in the prompt.
+* **Ask for explanations:** Request explanations for the generated code, especially for Django models, serializers, and views.
+* **Inquire about best practices:** Ask for advice on security, performance, and code organization.
+* **Request error handling examples:** Ask for examples of how to handle potential errors in both Flutter and Django.
+* **Iterate and refine:** If the generated code isn't exactly what you need, provide feedback and ask for modifications.
+* **Consider Eswatini context:** While the core functionality is similar to Superprof, keep the Eswatini context in mind. You might need to adapt language or consider local payment methods later.
+
+**Future Features (Beyond Initial Slices):**
+
+* **Reviews and Ratings:** Allow students to rate and review tutors.
+* **Payment Integration:** Integrate local payment gateways relevant to Eswatini.
+* **In-App Messaging:** Enable direct communication between students and tutors.
+* **Video Conferencing:** Integrate video calling for online lessons.
+* **Admin Dashboard:** For managing users, categories, and content.
+* **Localization (siSwati):** Translate the app into siSwati.
+
+By following this sliced approach and utilizing Cursor AI with these detailed prompts, you should be able to make significant progress in building your Eswatini-focused tutoring platform. Good luck! Let me know if you'd like me to elaborate on any of these slices or generate a more specific prompt for a particular aspect.
